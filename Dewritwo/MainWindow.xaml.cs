@@ -17,6 +17,9 @@ using Dewritwo.Resources;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
 using Crc32C;
+using MahApps.Metro.Controls.Dialogs;
+using System.Threading.Tasks;
+using System.Windows.Threading;
 
 namespace Dewritwo
 {
@@ -26,7 +29,7 @@ namespace Dewritwo
         public MainWindow()
         {
             InitializeComponent();
-
+            
             try
             {
                 Cfg.Initial(string.Empty);
@@ -50,7 +53,6 @@ namespace Dewritwo
                 BTNAction.Content = "Error";
             }
         }
-
         private void InitialHash()
         {
             var watch = Stopwatch.StartNew();
@@ -65,7 +67,7 @@ namespace Dewritwo
             watch.Stop();
             double seconds = TimeSpan.FromMilliseconds(watch.ElapsedMilliseconds).TotalSeconds;
             AppendDebugLine("Hash Complete in: " + seconds + " Seconds", Color.FromRgb(0, 255, 0));
-            BTNAction.Content = "Play Game";
+            BTNAction.Content = "Update";
         }
 
         public static uint Append(string filePath)
@@ -175,18 +177,51 @@ namespace Dewritwo
         #region Menu
         private void Action_OnClick(object sender, RoutedEventArgs e)
         {
-
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.FileName = "eldorado.exe";
             startInfo.Arguments = "-launcher";
 
-            if (BTNAction.Content == "Play Game")
-                Process.Start(startInfo);
-            if (Cfg.launcherConfigFile["Launcher.Random"] =="1")
-                RandomArmor();
-            if (Cfg.launcherConfigFile["Launcher.Close"] =="1")
-                Application.Current.Shutdown();
             
+
+            if (BTNAction.Content == "Play Game")
+            {
+                Process.Start(startInfo);
+                if (Cfg.launcherConfigFile["Launcher.Random"] == "1")
+                    RandomArmor();
+                if (Cfg.launcherConfigFile["Launcher.Close"] == "1")
+                    Application.Current.Shutdown();
+            }
+            else if (BTNAction.Content == "Update")
+            {
+                Update();
+            }
+        }
+
+        private async void Update()
+        {
+
+            var controller = await this.ShowProgressAsync("Updating to 0.4.9.1", "Downloading: ");
+
+            var i = 0.0;
+            while (i < 35.0)
+            {
+                await Task.Delay(100);
+
+                if (i > 1)
+                    controller.SetMessage("Downloading: tags.dat");
+                if (i > 10)
+                    controller.SetMessage("Downloading: halo3.zip");
+                if (i > 20)
+                    controller.SetMessage("Downloading: dewritoupdater.exe");
+                if (i > 25)
+                    controller.SetMessage("Update Complete");
+
+                if (controller.IsCanceled)
+                    break; //canceled progressdialog auto closes.
+                i += 1.0;
+            }
+            await controller.CloseAsync();
+            BTNAction.Content = "Play Game";
         }
 
         private void Reddit_OnClick(object sender, RoutedEventArgs e)
@@ -958,7 +993,7 @@ namespace Dewritwo
                     { 0x6B, "add" },
                     { 0x6E, "decimal" },
                 };
-
+                    
                 ThemeManager.ChangeAppStyle(Application.Current, ThemeManager.GetAccent(Cfg.launcherConfigFile["Launcher.Color"]), ThemeManager.GetAppTheme(Cfg.launcherConfigFile["Launcher.Theme"]));
 
                 if (Cfg.launcherConfigFile["Launcher.Color"] == "yellow")
