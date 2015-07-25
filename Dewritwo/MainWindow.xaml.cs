@@ -113,12 +113,11 @@ namespace Dewritwo
 
         private void LauncherSettings_Click(object sender, RoutedEventArgs e)
         {
-            if (LauncherSettingsGrid.Visibility == Visibility.Visible)
+            if (LauncherSettingsGrid.Visibility == Visibility.Visible && Flyout.IsOpen)
             {
                 Flyout.IsOpen = false;
-                LauncherSettingsGrid.Visibility = Visibility.Hidden;
             }
-            else if (LauncherSettingsGrid.Visibility != Visibility.Visible)
+            else if (LauncherSettingsGrid.Visibility == Visibility.Hidden)
             {
                 Flyout.IsOpen = false;
                 FlyoutHandler(LauncherSettingsGrid, "Launcher Settings");
@@ -154,10 +153,9 @@ namespace Dewritwo
 
         private void Debug_OnClick(object sender, RoutedEventArgs e)
         {
-            if (DebugGrid.Visibility == Visibility.Visible)
+            if (DebugGrid.Visibility == Visibility.Visible && Flyout.IsOpen)
             {
                 Flyout.IsOpen = false;
-                DebugGrid.Visibility = Visibility.Hidden;
             }
             else if (DebugGrid.Visibility != Visibility.Visible)
             {
@@ -184,9 +182,9 @@ namespace Dewritwo
 
             if (BTNAction.Content == "Play Game")
                 Process.Start(startInfo);
-            if (Cfg.configFile["Launcher.Random"] =="1")
+            if (Cfg.launcherConfigFile["Launcher.Random"] =="1")
                 RandomArmor();
-            if (Cfg.configFile["Launcher.Close"] =="1")
+            if (Cfg.launcherConfigFile["Launcher.Close"] =="1")
                 Application.Current.Shutdown();
             
         }
@@ -542,13 +540,13 @@ namespace Dewritwo
             {
                 return;
             }
-            Cfg.SetVariable("Launcher.Random", Convert.ToString(Convert.ToInt32(RandomCheck.IsChecked)), ref Cfg.configFile);
-            Cfg.SaveConfigFile("dewrito_prefs.cfg", Cfg.configFile);
+            Cfg.SetVariable("Launcher.Random", Convert.ToString(Convert.ToInt32(RandomCheck.IsChecked)), ref Cfg.launcherConfigFile);
+            Cfg.SaveConfigFile("launcher_prefs.cfg", Cfg.launcherConfigFile);
         }
 
         #endregion
 
-            #region Settings
+        #region Settings
         private void Fov_OnValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (!IsLoaded)
@@ -640,11 +638,11 @@ namespace Dewritwo
             {
                 return;
             }
-            ThemeManager.ChangeAppStyle(Application.Current, ThemeManager.GetAccent(Colors.SelectedValue.ToString()), ThemeManager.GetAppTheme(Cfg.configFile["Launcher.Theme"]));
-            Cfg.configFile["Launcher.Color"] = Colors.SelectedValue.ToString();
-            Cfg.SaveConfigFile("dewrito_prefs.cfg", Cfg.configFile);
+            ThemeManager.ChangeAppStyle(Application.Current, ThemeManager.GetAccent(Colors.SelectedValue.ToString()), ThemeManager.GetAppTheme(Cfg.launcherConfigFile["Launcher.Theme"]));
+            Cfg.launcherConfigFile["Launcher.Color"] = Colors.SelectedValue.ToString();
+            Cfg.SaveConfigFile("launcher_prefs.cfg", Cfg.launcherConfigFile);
 
-            if (Cfg.configFile["Launcher.Color"] == "yellow")
+            if (Cfg.launcherConfigFile["Launcher.Color"] == "yellow")
             {
                 Color Dark = (Color)ColorConverter.ConvertFromString("#252525");
                 CustomIcon.Fill = new SolidColorBrush(Dark);
@@ -654,6 +652,7 @@ namespace Dewritwo
                 Title.SetResourceReference(ForegroundProperty, "AccentColorBrush");
                 L.Fill = new SolidColorBrush(Dark);
                 E.Fill = new SolidColorBrush(Dark);
+                Title.Content = "ELDEWRITO";
             }
             else
             {
@@ -661,8 +660,23 @@ namespace Dewritwo
                 CustomIcon.Fill = new SolidColorBrush(Light);
                 SettingsIcon.Fill = new SolidColorBrush(Light);
                 Title.Foreground = new SolidColorBrush(Light);
+                Title.SetResourceReference(ForegroundProperty, "AccentColorBrush");
                 VOIPIcon.Fill = new SolidColorBrush(Light);
                 AutoExecIcon.Fill = new SolidColorBrush(Light);
+                Title.Content = "ELDEWRITO";
+            }
+
+            if (Cfg.launcherConfigFile["Launcher.Theme"] == "BaseLight" && Cfg.launcherConfigFile["Launcher.Color"] == "yellow")
+            {
+                Color Light = (Color)ColorConverter.ConvertFromString("#FFFFFF");
+                CustomIcon.Fill = new SolidColorBrush(Light);
+                SettingsIcon.Fill = new SolidColorBrush(Light);
+                VOIPIcon.Fill = new SolidColorBrush(Light);
+                AutoExecIcon.Fill = new SolidColorBrush(Light);
+                Title.SetResourceReference(ForegroundProperty, "AccentColorBrush");
+                L.Fill = new SolidColorBrush(Light);
+                E.Fill = new SolidColorBrush(Light);
+                Title.Content = "Where is your god now";
             }
         }
 
@@ -672,18 +686,44 @@ namespace Dewritwo
             {
                 return;
             }
-            ThemeManager.ChangeAppStyle(Application.Current, ThemeManager.GetAccent(Cfg.configFile["Launcher.Color"]), ThemeManager.GetAppTheme(Themes.SelectedValue.ToString()));
-            Cfg.configFile["Launcher.Theme"] = Themes.SelectedValue.ToString();
-            Cfg.SaveConfigFile("dewrito_prefs.cfg", Cfg.configFile);
+            ThemeManager.ChangeAppStyle(Application.Current, ThemeManager.GetAccent(Cfg.launcherConfigFile["Launcher.Color"]), ThemeManager.GetAppTheme(Themes.SelectedValue.ToString()));
+            Cfg.launcherConfigFile["Launcher.Theme"] = Themes.SelectedValue.ToString();
+            Cfg.SaveConfigFile("launcher_prefs.cfg", Cfg.launcherConfigFile);
 
-            if (Cfg.configFile["Launcher.Theme"] == "BaseLight")
+            if (Cfg.launcherConfigFile["Launcher.Theme"] == "BaseLight")
             {
-                Title.SetResourceReference(Control.ForegroundProperty, "AccentColorBrush");
+                Title.SetResourceReference(ForegroundProperty, "AccentColorBrush");
             }
             else
             {
                 Color Light = (Color)ColorConverter.ConvertFromString("#FFFFFF");
                 Title.Foreground = new SolidColorBrush(Light);
+            }
+
+            if (Cfg.launcherConfigFile["Launcher.Theme"] == "BaseLight" && Cfg.launcherConfigFile["Launcher.Color"] == "yellow")
+            {
+                Color Light = (Color)ColorConverter.ConvertFromString("#FFFFFF");
+                CustomIcon.Fill = new SolidColorBrush(Light);
+                SettingsIcon.Fill = new SolidColorBrush(Light);
+                VOIPIcon.Fill = new SolidColorBrush(Light);
+                AutoExecIcon.Fill = new SolidColorBrush(Light);
+                Title.SetResourceReference(ForegroundProperty, "AccentColorBrush");
+                L.Fill = new SolidColorBrush(Light);
+                E.Fill = new SolidColorBrush(Light);
+                Title.Content = "Where is your god now";
+            }
+
+            if (Cfg.launcherConfigFile["Launcher.Theme"] == "BaseDark" && Cfg.launcherConfigFile["Launcher.Color"] == "yellow")
+            {
+                Color Dark = (Color)ColorConverter.ConvertFromString("#252525");
+                CustomIcon.Fill = new SolidColorBrush(Dark);
+                SettingsIcon.Fill = new SolidColorBrush(Dark);
+                VOIPIcon.Fill = new SolidColorBrush(Dark);
+                AutoExecIcon.Fill = new SolidColorBrush(Dark);
+                Title.SetResourceReference(ForegroundProperty, "AccentColorBrush");
+                L.Fill = new SolidColorBrush(Dark);
+                E.Fill = new SolidColorBrush(Dark);
+                Title.Content = "ELDEWRITO";
             }
         }
 
@@ -693,8 +733,8 @@ namespace Dewritwo
             {
                 return;
             }
-            Cfg.SetVariable("Launcher.Close", Convert.ToString(Convert.ToInt32(Launch.IsChecked)), ref Cfg.configFile);
-            Cfg.SaveConfigFile("dewrito_prefs.cfg", Cfg.configFile);
+            Cfg.SetVariable("Launcher.Close", Convert.ToString(Convert.ToInt32(Launch.IsChecked)), ref Cfg.launcherConfigFile);
+            Cfg.SaveConfigFile("launcher_prefs.cfg", Cfg.launcherConfigFile);
         }
 
         #endregion
@@ -774,7 +814,6 @@ namespace Dewritwo
         private void Load()
         {
                 //Customization
-                
                 if (Cfg.configFile["Player.Name"] == "Forgot")
                     Cfg.SetVariable("Player.Name", "", ref Cfg.configFile);
                 Name.Text = Cfg.configFile["Player.Name"];
@@ -800,10 +839,10 @@ namespace Dewritwo
                 MaxPlayer.Value = Convert.ToDouble(Cfg.configFile["Server.MaxPlayers"]);
                 StartTimer.Value = Convert.ToDouble(Cfg.configFile["Server.Countdown"]);
                 //Launcher Settings
-                Colors.SelectedValue = Cfg.configFile["Launcher.Color"];
-                Themes.SelectedValue = Cfg.configFile["Launcher.Theme"];
-                Launch.IsChecked = Convert.ToBoolean(Convert.ToInt32(Cfg.configFile["Launcher.Close"]));
-                RandomCheck.IsChecked = Convert.ToBoolean(Convert.ToInt32(Cfg.configFile["Launcher.Random"]));
+                Colors.SelectedValue = Cfg.launcherConfigFile["Launcher.Color"];
+                Themes.SelectedValue = Cfg.launcherConfigFile["Launcher.Theme"];
+                Launch.IsChecked = Convert.ToBoolean(Convert.ToInt32(Cfg.launcherConfigFile["Launcher.Close"]));
+                RandomCheck.IsChecked = Convert.ToBoolean(Convert.ToInt32(Cfg.launcherConfigFile["Launcher.Random"]));
                 //VoIP Settings
                 AGC.IsChecked = Convert.ToBoolean(Convert.ToInt32(Cfg.configFile["VoIP.AGC"]));
                 Echo.IsChecked = Convert.ToBoolean(Convert.ToInt32(Cfg.configFile["VoIP.EchoCancellation"]));
@@ -920,9 +959,9 @@ namespace Dewritwo
                     { 0x6E, "decimal" },
                 };
 
-                ThemeManager.ChangeAppStyle(Application.Current, ThemeManager.GetAccent(Cfg.configFile["Launcher.Color"]), ThemeManager.GetAppTheme(Cfg.configFile["Launcher.Theme"]));
+                ThemeManager.ChangeAppStyle(Application.Current, ThemeManager.GetAccent(Cfg.launcherConfigFile["Launcher.Color"]), ThemeManager.GetAppTheme(Cfg.launcherConfigFile["Launcher.Theme"]));
 
-                if (Cfg.configFile["Launcher.Color"] == "yellow")
+                if (Cfg.launcherConfigFile["Launcher.Color"] == "yellow")
                 {
                     Color Dark = (Color) ColorConverter.ConvertFromString("#252525");
                     CustomIcon.Fill = new SolidColorBrush(Dark);
@@ -933,9 +972,21 @@ namespace Dewritwo
                     L.Fill = new SolidColorBrush(Dark);
                     E.Fill = new SolidColorBrush(Dark);
                 }
-                if (Cfg.configFile["Launcher.Theme"] == "BaseLight")
+                if (Cfg.launcherConfigFile["Launcher.Theme"] == "BaseLight")
                 {
                     Title.SetResourceReference(ForegroundProperty, "AccentColorBrush");
+                }
+                if (Cfg.launcherConfigFile["Launcher.Theme"] == "BaseLight" && Cfg.launcherConfigFile["Launcher.Color"] == "yellow")
+                {
+                    Color Light = (Color)ColorConverter.ConvertFromString("#FFFFFF");
+                    CustomIcon.Fill = new SolidColorBrush(Light);
+                    SettingsIcon.Fill = new SolidColorBrush(Light);
+                    VOIPIcon.Fill = new SolidColorBrush(Light);
+                    AutoExecIcon.Fill = new SolidColorBrush(Light);
+                    Title.SetResourceReference(ForegroundProperty, "AccentColorBrush");
+                    L.Fill = new SolidColorBrush(Light);
+                    E.Fill = new SolidColorBrush(Light);
+                    Title.Content = "Where is your god now";
                 }
         }
         #endregion

@@ -15,6 +15,7 @@ namespace Dewritwo.Resources
         #region Variables
 
         public static Dictionary<string, string> configFile;
+        public static Dictionary<string, string> launcherConfigFile;
 
         #endregion
 
@@ -115,6 +116,7 @@ namespace Dewritwo.Resources
         public static void Initial(string error)
         {
             var CfgFileExists = LoadConfigFile("dewrito_prefs.cfg", ref configFile);
+            var LauncherCfgFileExists = LoadConfigFile("launcher_prefs.cfg", ref launcherConfigFile);
 
             if (!CfgFileExists)
             {
@@ -164,15 +166,16 @@ namespace Dewritwo.Resources
                 SetVariable("VoIP.AGC", "1", ref configFile);
                 Console.WriteLine("New CFG Created");
             }
-            if (error == "launcher")
+            if (!LauncherCfgFileExists)
             {
-                SetVariable("Launcher.Color", "blue", ref configFile);
-                SetVariable("Launcher.Theme", "BaseDark", ref configFile);
-                SetVariable("Launcher.Close", "0", ref configFile);
-                SetVariable("Launcher.Random", "0", ref configFile);
+                SetVariable("Launcher.Color", "blue", ref launcherConfigFile);
+                SetVariable("Launcher.Theme", "BaseDark", ref launcherConfigFile);
+                SetVariable("Launcher.Close", "0", ref launcherConfigFile);
+                SetVariable("Launcher.Random", "0", ref launcherConfigFile);
                 Console.WriteLine("Launcher.Added");
             }
-            
+
+            SaveConfigFile("launcher_prefs.cfg", launcherConfigFile);
             SaveConfigFile("dewrito_prefs.cfg", configFile);
         }
 
