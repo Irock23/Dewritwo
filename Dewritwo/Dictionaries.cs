@@ -128,7 +128,7 @@ namespace Dewritwo
             Commands.Add("Game.DeleteForgeItem", "Binds Forge Delete [No Value]");
             Commands.Add("+VoIP.Talk", "Binds Push to Talk Key [No Value]");
             Commands.Add("Camera.HideHUD", "Hides Game Hud [0 or 1]");
-            Commands.Add("Camera.Mode", "Camera Mode [default/first/flying/static]");
+            Commands.Add("Camera.Mode", "Camera Mode [default/first/flying/static/spectate]");
             Commands.Add("Camera.Speed", "Camera Speed [Value]");
             Commands.Add("Game.Exit", "Ends Halo Online Process [No Value]");
             Commands.Add("Game.ForceLoad", "Force Loads a Map [Map Name]");

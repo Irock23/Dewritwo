@@ -261,8 +261,12 @@ namespace Dewritwo
             var keyPressed = KeyInterop.VirtualKeyFromKey(e.Key);
             BindButton.Text = Convert.ToString(e.Key);
             keyValue = doritoKey.FirstOrDefault(x => x.Key == keyPressed).Value;
+            if (!doritoKey.ContainsKey(keyPressed))
+            {
+                BindButton.Text = "Invalid Key";
+            }
 
-            if (CommandLine.IsEnabled == false)
+            if (CommandLine.IsEnabled == false && BindButton.Text != "Invalid Key")
             {
                 AutoExecWrite(Action.SelectedValue + " " + keyValue + " " + Command.SelectedValue,
             Preview.Text.Contains(Convert.ToString(Command.SelectedValue)) && Preview.Text.Contains(Convert.ToString(Action.SelectedValue)), Convert.ToString(Command.SelectedValue));
@@ -349,7 +353,7 @@ namespace Dewritwo
                     Preview.Text.Contains(Convert.ToString(Command.SelectedValue)),
                     Convert.ToString(Command.SelectedValue));
             }
-            else if (updateText && Action.SelectedValue == "bind")
+            else if (updateText && Action.SelectedValue == "bind" && BindButton.Text != "Invalid Key")
             {
                 AutoExecWrite(
                     Action.SelectedValue + " " + keyValue + " " + Command.SelectedValue + " " + CommandLine.Text,
