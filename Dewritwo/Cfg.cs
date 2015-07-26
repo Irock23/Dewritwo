@@ -113,7 +113,7 @@ namespace Dewritwo.Resources
             return true;
         }
 
-        public static void Initial(string error)
+        public static void Initial(bool error)
         {
             var CfgFileExists = LoadConfigFile("dewrito_prefs.cfg", ref configFile);
             var LauncherCfgFileExists = LoadConfigFile("launcher_prefs.cfg", ref launcherConfigFile);
@@ -166,12 +166,18 @@ namespace Dewritwo.Resources
                 SetVariable("VoIP.AGC", "1", ref configFile);
                 Console.WriteLine("New CFG Created");
             }
+            else if (error)
+            {
+                SetVariable("Video.IntroSkip", "1", ref configFile);
+            }
+
             if (!LauncherCfgFileExists)
             {
                 SetVariable("Launcher.Color", "blue", ref launcherConfigFile);
                 SetVariable("Launcher.Theme", "BaseDark", ref launcherConfigFile);
                 SetVariable("Launcher.Close", "0", ref launcherConfigFile);
                 SetVariable("Launcher.Random", "0", ref launcherConfigFile);
+                SetVariable("Launcher.IntroSkip", "1", ref launcherConfigFile);
                 Console.WriteLine("Launcher.Added");
             }
 

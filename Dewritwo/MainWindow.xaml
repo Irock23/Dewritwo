@@ -223,6 +223,11 @@
                                 <TextBox x:Name="txtStartTimer" Margin="25,0,0,0" Height="20"
                                          Text="{Binding ElementName=StartTimer,Path=Value}" Width="60" />
                             </StackPanel>
+                            <Label FontSize="14" FontWeight="Bold" Margin="0,5,0,0">Game Settings</Label>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
+                                <Label FontSize="14">Disable Intro Videos:</Label>
+                                <CheckBox x:Name="chkIntro" Unchecked="chkIntro_Changed" Checked="chkIntro_Changed" Margin="5,0,0,0"></CheckBox>
+                            </StackPanel>
                         </StackPanel>
                         <Button Style="{StaticResource AccentedSquareButtonStyle}" Click="btnReset_Click"
                                 Content="Reset" Controls:ButtonHelper.PreserveTextCase="True" Height="32" Width="75"
