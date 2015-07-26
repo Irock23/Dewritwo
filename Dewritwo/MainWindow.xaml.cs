@@ -265,44 +265,24 @@ namespace Dewritwo
                 BindButton.Text = "Invalid Key";
             }
 
-            if (CommandLine.IsEnabled == false && BindButton.Text != "Invalid Key" && BindButton.Text != "Unbound")
+            if (BindButton.Text != "Invalid Key" && BindButton.Text != "Unbound")
             {
-                AutoExecWrite(Action.SelectedValue + " " + keyValue + " " + Command.SelectedValue,
-            Preview.Text.Contains(Convert.ToString(Command.SelectedValue)) && Preview.Text.Contains(Convert.ToString(Action.SelectedValue)));
+                AutoExecWrite("bind " + keyValue + " " + Command.SelectedValue + (CommandLine.IsEnabled ? " " + CommandLine.Text : ""),
+                    new Regex("^\\s*bind\\s+[a-z0-9]+\\s+" + Regex.Escape(Convert.ToString(Command.SelectedValue))
+                        + "(\\s+.*)?$", RegexOptions.IgnoreCase | RegexOptions.Multiline));
             }
         }
 
-        private void AutoExecWrite(string write, bool duplicate)
+        private void AutoExecWrite(string write, Regex replace)
         {
-            if (duplicate)
+            if (replace != null && replace.IsMatch(Preview.Text))
             {
-                var lines = File.ReadAllLines("autoexec.cfg");
-                if (Action.SelectedValue == "command")
-                {
-                    foreach (var line in lines)
-                    {
-                        if (!line.Contains("bind") && line.Contains(Convert.ToString(Command.SelectedValue)))
-                        {
-                            Preview.Text = Preview.Text.Replace(line, write);
-                        }
-                    }
-                }
-                else
-                {
-                    foreach (var line in lines)
-                    {
-                        if (line.Contains("bind") && line.Contains(Convert.ToString(Command.SelectedValue)))
-                        {
-                            Preview.Text = Preview.Text.Replace(line, write);
-                        }
-                    }
-                }
+                Preview.Text = replace.Replace(Preview.Text, write);
             }
-            if (!duplicate)
+            else
             {
-                string sent = write;
-                Preview.AppendText(sent);
-                Preview.AppendText(Environment.NewLine);
+                if (Preview.Text != "") Preview.AppendText(Environment.NewLine);
+                Preview.AppendText(write);
             }
             File.WriteAllText("autoexec.cfg", Preview.Text);
         }
@@ -350,14 +330,16 @@ namespace Dewritwo
             if (updateText && Action.SelectedValue == "command")
             {
                 AutoExecWrite(Command.SelectedValue + " " + CommandLine.Text,
-                    Preview.Text.Contains(Convert.ToString(Command.SelectedValue)));
+                    new Regex("^\\s*" + Regex.Escape(Convert.ToString(Command.SelectedValue))
+                        + "(\\s+.*)?$", RegexOptions.IgnoreCase | RegexOptions.Multiline));
                 Console.WriteLine("command complete");
             }
             else if(updateText && BindButton.Text != "Invalid Key" && BindButton.Text != "Unbound")
             {
                 AutoExecWrite(
                     "bind " + keyValue + " " + Command.SelectedValue + " " + CommandLine.Text,
-                    Preview.Text.Contains(Convert.ToString(Command.SelectedValue)));
+                    new Regex("^\\s*bind\\s+[a-z0-9]+\\s+" + Regex.Escape(Convert.ToString(Command.SelectedValue))
+                        + "(\\s+.*)?$", RegexOptions.IgnoreCase | RegexOptions.Multiline));
                 Console.WriteLine("write complete");
             }
         }
