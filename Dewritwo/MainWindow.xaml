@@ -34,6 +34,7 @@
         <ObjectDataProvider x:Key="Action" ObjectType="{x:Type local:Dictionaries}" MethodName="GetAction" />
         <ObjectDataProvider x:Key="Command" ObjectType="{x:Type local:Dictionaries}" MethodName="GetCommand" />
         <ObjectDataProvider x:Key="CommandList" ObjectType="{x:Type local:Dictionaries}" MethodName="GetCommandList" />
+        <ObjectDataProvider x:Key="CommandLine" ObjectType="{x:Type local:Dictionaries}" MethodName="GetCommandLine" />
     </Controls:MetroWindow.Resources>
     <Controls:MetroWindow.Flyouts>
         <Controls:FlyoutsControl>
@@ -283,15 +284,15 @@
                         <StackPanel Orientation="Vertical" Margin="10,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Left">
                             <Label x:Name="Focus" FontSize="14" FontWeight="Bold" Margin="0,5,0,0">AutoExec Settings</Label>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
-                                <ComboBox x:Name="Action" Width="95"
+                                <ComboBox x:Name="Action" Width="95" SelectedValue="bind"
                                           ItemsSource="{Binding Source={StaticResource Action}}"
                                           SelectedValuePath="Value" DisplayMemberPath="Key" Height="10"
                                           Margin="5,0,0,0" SelectionChanged="Action_OnSelectionChanged" />
                                 
-                                <ComboBox x:Name="Command" Width="150"
+                                <ComboBox x:Name="Command" Width="150" SelectedValue="Execute"
                                           ItemsSource="{Binding Source={StaticResource Command}}"
                                           SelectedValuePath="Value" DisplayMemberPath="Key" Height="10"
-                                          Margin="10,0,0,0" SelectionChanged="Command_OnSelectionChanged" />
+                                          Margin="10,0,0,0" SelectionChanged="Command_OnSelectionChanged" Controls:TextBoxHelper.Watermark="Command" />
                                 
                                 <Label x:Name="To" FontSize="14" Margin="5,0,0,0">to</Label>
                                 <TextBox Margin="5,0,0,0" Width="75" x:Name="BindButton" Height="10" LostFocus="BindButton_OnLostFocus" PreviewKeyDown="BindButton_OnKeyDown" Text="Unbound" Cursor="Hand" GotFocus="BindButton_OnGotFocus" IsReadOnly="True" BorderBrush="{DynamicResource AccentColorBrush}"  Background="{DynamicResource AccentColorBrush}" TextAlignment="Center" Padding="0,0,0,0" />

@@ -147,8 +147,8 @@ namespace Dewritwo
 
         private void AutoExec_Click(object sender, RoutedEventArgs e)
         {
-            Command.SelectedValue = "Camera.HideHUD";
-            Action.SelectedValue = "bind";
+            Dictionary<string, string> Dict = Dictionaries.GetCommandLine();
+            CommandLine.SetValue(TextBoxHelper.WatermarkProperty, Dict[Convert.ToString(Command.SelectedValue)]);
             FlyoutHandler(AutoExecGrid, "Auto Exec");
             Preview.Text = File.ReadAllText("autoexec.cfg");
         }
@@ -276,7 +276,6 @@ namespace Dewritwo
                 var lines = File.ReadAllLines("autoexec.cfg");
                 if (Action.SelectedValue == "command")
                 {
-
                     foreach (var line in lines)
                     {
                         if (!line.Contains("bind") && line.Contains(Convert.ToString(Command.SelectedValue)))
@@ -285,7 +284,7 @@ namespace Dewritwo
                         }
                     }
                 }
-                if (Action.SelectedValue == "bind")
+                else
                 {
                     foreach (var line in lines)
                     {
@@ -302,7 +301,6 @@ namespace Dewritwo
                 Preview.AppendText(sent);
                 Preview.AppendText(Environment.NewLine);
             }
-
             File.WriteAllText("autoexec.cfg", Preview.Text);
         }
 
@@ -316,7 +314,6 @@ namespace Dewritwo
             if (Action.SelectedValue == "command")
             {
                 Command.ItemsSource = Dictionaries.GetCommandList();
-                Command.SelectedValue = "Camera.HideHUD";
                 updateText = false;
                 CommandLine.Text = "";
                 updateText = true;
@@ -331,7 +328,6 @@ namespace Dewritwo
             if (Action.SelectedValue == "bind")
             {
                 Command.ItemsSource = Dictionaries.GetCommand();
-                Command.SelectedValue = "Camera.HideHUD";
                 updateText = false;
                 CommandLine.Text = "";
                 updateText = true;
@@ -353,7 +349,7 @@ namespace Dewritwo
                     Preview.Text.Contains(Convert.ToString(Command.SelectedValue)),
                     Convert.ToString(Command.SelectedValue));
             }
-            if (updateText && Action.SelectedValue == "bind")
+            else if (updateText && Action.SelectedValue == "bind")
             {
                 AutoExecWrite(
                     Action.SelectedValue + " " + keyValue + " " + Command.SelectedValue + " " + CommandLine.Text,
@@ -368,12 +364,11 @@ namespace Dewritwo
             {
                 return;
             }
-            if (Command.SelectedValue == "Game.DeleteForgeItem" || Command.SelectedValue == "+VoIP.Talk")
+            Dictionary<string, string> Selection = Dictionaries.GetCommandLine();
+            if (Selection[Convert.ToString(Command.SelectedValue)].Contains("[No Value]"))
             {
                 CommandLine.IsEnabled = false;
-                updateText = false;
-                CommandLine.Text = "No Value Needed";
-                updateText = true;
+                
             }
             else
             {
@@ -383,6 +378,7 @@ namespace Dewritwo
                 updateText = true;
                 CommandLine.IsEnabled = true;
             }
+            CommandLine.SetValue(TextBoxHelper.WatermarkProperty, Selection[Convert.ToString(Command.SelectedValue)]);
         }
 
         #endregion
