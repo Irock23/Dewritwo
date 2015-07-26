@@ -901,6 +901,10 @@ namespace Dewritwo
                 File.Create("autoexec.cfg");
             if (!Directory.Exists("mods/medals"))
                 Directory.CreateDirectory("mods/medals");
+            if (!Directory.Exists("mods/maps"))
+                Directory.CreateDirectory("mods/maps");
+            if (!Directory.Exists("mods/variants"))
+                Directory.CreateDirectory("mods/variants");
             if (Directory.Exists("bink_disabled"))
                 chkIntro.IsChecked = true;
 
