@@ -265,14 +265,14 @@ namespace Dewritwo
                 BindButton.Text = "Invalid Key";
             }
 
-            if (CommandLine.IsEnabled == false && BindButton.Text != "Invalid Key")
+            if (CommandLine.IsEnabled == false && BindButton.Text != "Invalid Key" && BindButton.Text != "Unbound")
             {
                 AutoExecWrite(Action.SelectedValue + " " + keyValue + " " + Command.SelectedValue,
-            Preview.Text.Contains(Convert.ToString(Command.SelectedValue)) && Preview.Text.Contains(Convert.ToString(Action.SelectedValue)), Convert.ToString(Command.SelectedValue));
+            Preview.Text.Contains(Convert.ToString(Command.SelectedValue)) && Preview.Text.Contains(Convert.ToString(Action.SelectedValue)));
             }
         }
 
-        private void AutoExecWrite(string write, bool duplicate, string search)
+        private void AutoExecWrite(string write, bool duplicate)
         {
             if (duplicate)
             {
@@ -316,7 +316,8 @@ namespace Dewritwo
         {
             if (Action.SelectedValue == "command")
             {
-                Command.ItemsSource = Dictionaries.GetCommandList();
+                keyValue = "Unbound";
+                BindButton.Text = keyValue;
                 updateText = false;
                 CommandLine.Text = "";
                 updateText = true;
@@ -349,15 +350,15 @@ namespace Dewritwo
             if (updateText && Action.SelectedValue == "command")
             {
                 AutoExecWrite(Command.SelectedValue + " " + CommandLine.Text,
-                    Preview.Text.Contains(Convert.ToString(Command.SelectedValue)),
-                    Convert.ToString(Command.SelectedValue));
+                    Preview.Text.Contains(Convert.ToString(Command.SelectedValue)));
+                Console.WriteLine("command complete");
             }
-            else if (updateText && Action.SelectedValue == "bind" && BindButton.Text != "Invalid Key")
+            else if(updateText && BindButton.Text != "Invalid Key" && BindButton.Text != "Unbound")
             {
                 AutoExecWrite(
-                    Action.SelectedValue + " " + keyValue + " " + Command.SelectedValue + " " + CommandLine.Text,
-                    Preview.Text.Contains(Convert.ToString(Command.SelectedValue)),
-                    Convert.ToString(Command.SelectedValue));
+                    "bind " + keyValue + " " + Command.SelectedValue + " " + CommandLine.Text,
+                    Preview.Text.Contains(Convert.ToString(Command.SelectedValue)));
+                Console.WriteLine("write complete");
             }
         }
 
@@ -370,14 +371,15 @@ namespace Dewritwo
             Dictionary<string, string> Selection = Dictionaries.GetCommandLine();
             if (Selection[Convert.ToString(Command.SelectedValue)].Contains("[No Value]"))
             {
+                BindButton.Text = "Unbound";
                 CommandLine.IsEnabled = false;
-                
+                CommandLine.Text = string.Empty;
             }
             else
             {
                 BindButton.Text = "Unbound";
                 updateText = false;
-                CommandLine.Text = String.Empty;
+                CommandLine.Text = string.Empty;
                 updateText = true;
                 CommandLine.IsEnabled = true;
             }

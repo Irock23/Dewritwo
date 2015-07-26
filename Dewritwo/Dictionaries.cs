@@ -170,55 +170,6 @@ namespace Dewritwo
             return Commands;
         }
 
-        public static Dictionary<string, string> GetCommandList()
-        {
-            var Commands = new Dictionary<string, string>();
-            Commands.Add("Execute", "Execute");
-            Commands.Add("Forge (Delete)", "Game.DeleteForgeItem");
-            Commands.Add("Push to Talk Key", "+VoIP.Talk");
-            Commands.Add("Hide HUD", "Camera.HideHUD");
-            Commands.Add("Camera Mode", "Camera.Mode");
-            Commands.Add("Camera Speed", "Camera.Speed");
-            Commands.Add("Exit Game", "Game.Exit");
-            Commands.Add("Force Load Map", "Game.ForceLoad");
-            Commands.Add("Load GameType", "Game.GameType");
-            Commands.Add("Game Info", "Game.Info");
-            Commands.Add("Language", "Game.LanguageID");
-            Commands.Add("Filter Debug Log", "Game.LogFilter");
-            Commands.Add("Debug Log Mode", "Game.LogMode");
-            Commands.Add("Debug Log File Name", "Game.LogName");
-            Commands.Add("Load Forge/Map", "Game.Map");
-            Commands.Add("HTML Menu URL", "Game.MenuURL");
-            Commands.Add("HTML Menu Open", "Game.SetMenuEnabled");
-            Commands.Add("Open Specific UI", "Game.ShowUI");
-            Commands.Add("Start/Restart Game", "Game.Start");
-            Commands.Add("Show Game Version", "Game.Version");
-            Commands.Add("Bloom Value", "Graphics.Bloom");
-            Commands.Add("Red Hue Value", "Graphics.RedHue");
-            Commands.Add("Green Hue Value", "Graphics.GreenHue");
-            Commands.Add("Blue Hue Value", "Graphics.BlueHue");
-            Commands.Add("Depth of Field Value", "Graphics.DepthOfField");
-            Commands.Add("Cinematic Letterbox", "Graphics.Letterbox");
-            Commands.Add("Saturation Value", "Graphics.Saturation");
-            Commands.Add("Global Chat Channel", "IRC.GlobalChannel");
-            Commands.Add("Global Chat Server", "IRC.Server");
-            Commands.Add("Global Chat Port", "IRC.ServerPort");
-            Commands.Add("Print Player UID", "Player.PrintUID");
-            Commands.Add("Print Private Stats Key", "Player.PrivKey");
-            Commands.Add("Print Public Stats Key", "Player.PubKey");
-            Commands.Add("Announce Server", "Server.Announce");
-            Commands.Add("Announce Stats", "Server.AnnounceStats");
-            Commands.Add("Connect to a Server", "Server.Connect");
-            Commands.Add("Kick Player (Host Only)", "Server.KickPlayer");
-            Commands.Add("List Players (Host Only)", "Server.ListPlayers");
-            Commands.Add("HTTP Server Port", "Server.Port");
-            Commands.Add("Automatically Announce", "Server.ShouldAnnounce");
-            Commands.Add("Game Speed", "Time.GameSpeed");
-            Commands.Add("Write Config File", "WriteConfig");
-            Commands.Add("Help", "Help");
-            return Commands;
-        }
-
         public static Dictionary<string, string> GetTheme()
         {
             var Themes = new Dictionary<string, string>();

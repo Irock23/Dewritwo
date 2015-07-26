@@ -33,7 +33,6 @@
         <ObjectDataProvider x:Key="Theme" ObjectType="{x:Type local:Dictionaries}" MethodName="GetTheme" />
         <ObjectDataProvider x:Key="Action" ObjectType="{x:Type local:Dictionaries}" MethodName="GetAction" />
         <ObjectDataProvider x:Key="Command" ObjectType="{x:Type local:Dictionaries}" MethodName="GetCommand" />
-        <ObjectDataProvider x:Key="CommandList" ObjectType="{x:Type local:Dictionaries}" MethodName="GetCommandList" />
         <ObjectDataProvider x:Key="CommandLine" ObjectType="{x:Type local:Dictionaries}" MethodName="GetCommandLine" />
     </Controls:MetroWindow.Resources>
     <Controls:MetroWindow.Flyouts>
